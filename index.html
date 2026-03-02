@@ -1,0 +1,855 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Kestos × IMA Studio | 全球 AI 品牌广告征集令</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --surge-teal: #1E7FA0;
+            --salt-white: #FFFEFA;
+            --dusk-wine: #843040;
+            --abyss-black: #000000;
+            --sand: #F5F0E8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--salt-white);
+            color: var(--abyss-black);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* Loading Screen */
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--abyss-black);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .loading-screen.hidden {
+            opacity: 0;
+            visibility: hidden;
+        }
+
+        .loading-text {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            letter-spacing: 8px;
+            text-transform: uppercase;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 0.4; }
+            50% { opacity: 1; }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%),
+                        url('images/hero-swim.jpg');
+            background-size: cover;
+            background-position: center;
+            animation: slowZoom 20s ease-in-out infinite alternate;
+        }
+
+        @keyframes slowZoom {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            padding: 40px 24px;
+            max-width: 600px;
+        }
+
+        .brand-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 16px;
+            background: rgba(255, 254, 250, 0.1);
+            backdrop-filter: blur(10px);
+            padding: 16px 28px;
+            border-radius: 100px;
+            margin-bottom: 40px;
+            border: 1px solid rgba(255, 254, 250, 0.2);
+        }
+
+        .brand-logo {
+            width: 120px;
+            height: 24px;
+            color: var(--salt-white);
+        }
+
+        .brand-badge span {
+            color: var(--salt-white);
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            font-weight: 500;
+        }
+
+        .brand-badge .divider {
+            width: 1px;
+            height: 16px;
+            background: rgba(255, 254, 250, 0.3);
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(36px, 10vw, 64px);
+            font-weight: 700;
+            color: var(--salt-white);
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        .hero h1 .highlight {
+            color: var(--surge-teal);
+            display: block;
+        }
+
+        .hero-subtitle {
+            font-size: 16px;
+            color: rgba(255, 254, 250, 0.8);
+            margin-bottom: 40px;
+            font-weight: 300;
+            line-height: 1.8;
+        }
+
+        .countdown {
+            background: rgba(255, 254, 250, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 254, 250, 0.1);
+            border-radius: 20px;
+            padding: 24px 32px;
+            margin-bottom: 40px;
+        }
+
+        .countdown-label {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: rgba(255, 254, 250, 0.6);
+            margin-bottom: 16px;
+        }
+
+        .countdown-time {
+            display: flex;
+            justify-content: center;
+            gap: 24px;
+        }
+
+        .countdown-item {
+            text-align: center;
+        }
+
+        .countdown-item .number {
+            font-size: 36px;
+            font-weight: 600;
+            color: var(--salt-white);
+            line-height: 1;
+            font-variant-numeric: tabular-nums;
+        }
+
+        .countdown-item .label {
+            font-size: 10px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: rgba(255, 254, 250, 0.5);
+            margin-top: 4px;
+        }
+
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--salt-white);
+            color: var(--abyss-black);
+            padding: 18px 40px;
+            border-radius: 100px;
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 40px rgba(255, 254, 250, 0.2);
+        }
+
+        .cta-button svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s;
+        }
+
+        .cta-button:hover svg {
+            transform: translateX(4px);
+        }
+
+        .scroll-hint {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: rgba(255, 254, 250, 0.4);
+            font-size: 11px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            animation: bounce 2s infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(10px); }
+        }
+
+        /* Prize Section */
+        .prize-section {
+            padding: 80px 24px;
+            background: var(--salt-white);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 48px;
+        }
+
+        .section-label {
+            font-size: 11px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            color: var(--surge-teal);
+            margin-bottom: 12px;
+        }
+
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(28px, 6vw, 40px);
+            font-weight: 700;
+            color: var(--abyss-black);
+        }
+
+        .prize-cards {
+            display: grid;
+            gap: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .prize-card {
+            background: var(--sand);
+            border-radius: 20px;
+            padding: 32px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .prize-card.featured {
+            background: linear-gradient(135deg, var(--surge-teal) 0%, #164d63 100%);
+            color: var(--salt-white);
+        }
+
+        .prize-card.featured .prize-title,
+        .prize-card.featured .prize-desc {
+            color: var(--salt-white);
+        }
+
+        .prize-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255, 254, 250, 0.2);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 24px;
+        }
+
+        .prize-title {
+            font-size: 14px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            margin-bottom: 8px;
+            color: var(--abyss-black);
+        }
+
+        .prize-amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .prize-desc {
+            font-size: 14px;
+            color: rgba(0, 0, 0, 0.6);
+            line-height: 1.6;
+        }
+
+        /* Brand Story Section */
+        .brand-section {
+            padding: 80px 24px;
+            background: var(--sand);
+        }
+
+        .brand-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .brand-year {
+            font-family: 'Playfair Display', serif;
+            font-size: 72px;
+            font-weight: 700;
+            color: var(--surge-teal);
+            opacity: 0.2;
+            line-height: 1;
+            margin-bottom: -20px;
+        }
+
+        .brand-text {
+            font-size: 16px;
+            line-height: 2;
+            color: var(--abyss-black);
+            margin-bottom: 32px;
+        }
+
+        .brand-quote {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-style: italic;
+            color: var(--dusk-wine);
+            padding: 24px 0;
+            border-top: 1px solid rgba(132, 48, 64, 0.2);
+            border-bottom: 1px solid rgba(132, 48, 64, 0.2);
+            margin-bottom: 32px;
+        }
+
+        .keywords {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .keyword {
+            background: var(--salt-white);
+            padding: 10px 20px;
+            border-radius: 100px;
+            font-size: 12px;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            color: var(--abyss-black);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+        }
+
+        /* Color Palette */
+        .palette-section {
+            padding: 80px 24px;
+            background: var(--salt-white);
+        }
+
+        .palette-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 16px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .color-item {
+            aspect-ratio: 1;
+            border-radius: 16px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .color-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.4) 0%, transparent 50%);
+        }
+
+        .color-item.teal { background: var(--surge-teal); }
+        .color-item.white { background: var(--salt-white); border: 1px solid rgba(0,0,0,0.1); }
+        .color-item.wine { background: var(--dusk-wine); }
+        .color-item.black { background: var(--abyss-black); }
+
+        .color-item.white .color-name,
+        .color-item.white .color-hex {
+            color: var(--abyss-black);
+        }
+
+        .color-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--salt-white);
+            position: relative;
+            z-index: 1;
+        }
+
+        .color-hex {
+            font-size: 12px;
+            color: rgba(255, 254, 250, 0.7);
+            font-family: monospace;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Requirements Section */
+        .req-section {
+            padding: 80px 24px;
+            background: var(--abyss-black);
+            color: var(--salt-white);
+        }
+
+        .req-section .section-label {
+            color: var(--surge-teal);
+        }
+
+        .req-section .section-title {
+            color: var(--salt-white);
+        }
+
+        .req-list {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .req-item {
+            background: rgba(255, 254, 250, 0.05);
+            border: 1px solid rgba(255, 254, 250, 0.1);
+            border-radius: 16px;
+            padding: 24px;
+            display: flex;
+            gap: 16px;
+            align-items: flex-start;
+        }
+
+        .req-number {
+            width: 32px;
+            height: 32px;
+            background: var(--surge-teal);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            font-weight: 600;
+            flex-shrink: 0;
+        }
+
+        .req-text {
+            font-size: 14px;
+            line-height: 1.8;
+            color: rgba(255, 254, 250, 0.9);
+        }
+
+        /* CTA Section */
+        .cta-section {
+            padding: 100px 24px;
+            background: linear-gradient(135deg, var(--dusk-wine) 0%, var(--abyss-black) 100%);
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(ellipse at center, rgba(30, 127, 160, 0.2) 0%, transparent 70%);
+            animation: rotate 20s linear infinite;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        .cta-content {
+            position: relative;
+            z-index: 1;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .cta-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(32px, 8vw, 48px);
+            font-weight: 700;
+            color: var(--salt-white);
+            margin-bottom: 24px;
+            line-height: 1.2;
+        }
+
+        .cta-desc {
+            font-size: 16px;
+            color: rgba(255, 254, 250, 0.8);
+            margin-bottom: 40px;
+            line-height: 1.8;
+        }
+
+        .cta-button-light {
+            background: var(--salt-white);
+            color: var(--abyss-black);
+        }
+
+        /* Footer */
+        .footer {
+            padding: 40px 24px;
+            background: var(--abyss-black);
+            text-align: center;
+            border-top: 1px solid rgba(255, 254, 250, 0.1);
+        }
+
+        .footer-text {
+            font-size: 12px;
+            color: rgba(255, 254, 250, 0.4);
+            letter-spacing: 1px;
+        }
+
+        /* Animations */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .countdown-time {
+                gap: 16px;
+            }
+            
+            .countdown-item .number {
+                font-size: 28px;
+            }
+            
+            .brand-year {
+                font-size: 56px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Screen -->
+    <div class="loading-screen" id="loading">
+        <div class="loading-text">KESTOS × IMA STUDIO</div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-content">
+            <div class="brand-badge">
+                <svg class="brand-logo" viewBox="0 0 200 40" fill="currentColor">
+                    <text x="0" y="32" font-family="'Playfair Display', serif" font-size="36" font-weight="700" letter-spacing="2">KESTOS</text>
+                </svg>
+                <div class="divider"></div>
+                <span>IMA Studio</span>
+            </div>
+            
+            <h1>
+                全球 AI 品牌
+                <span class="highlight">广告征集令</span>
+            </h1>
+            
+            <p class="hero-subtitle">
+                优胜作品将登上纽约或旧金山户外大屏<br>
+                24/7 全天候滚动播放
+            </p>
+            
+            <div class="countdown">
+                <div class="countdown-label">作品征集倒计时</div>
+                <div class="countdown-time" id="countdown">
+                    <div class="countdown-item">
+                        <div class="number" id="days">00</div>
+                        <div class="label">天</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="number" id="hours">00</div>
+                        <div class="label">时</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="number" id="minutes">00</div>
+                        <div class="label">分</div>
+                    </div>
+                    <div class="countdown-item">
+                        <div class="number" id="seconds">00</div>
+                        <div class="label">秒</div>
+                    </div>
+                </div>
+            </div>
+            
+            <a href="#prize" class="cta-button">
+                了解详情
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+        
+        <div class="scroll-hint">向下滚动</div>
+    </section>
+
+    <!-- Prize Section -->
+    <section class="prize-section" id="prize">
+        <div class="section-header fade-in">
+            <div class="section-label">Rewards</div>
+            <h2 class="section-title">丰厚奖励等你赢取</h2>
+        </div>
+        
+        <div class="prize-cards">
+            <div class="prize-card featured fade-in">
+                <div class="prize-icon">🏆</div>
+                <div class="prize-title">总奖池</div>
+                <div class="prize-amount">$1,000</div>
+                <div class="prize-desc">现金奖励 + 24,000 平台积分<br>优胜作品将在纽约/旧金山广告牌全天候展示</div>
+            </div>
+            
+            <div class="prize-card fade-in">
+                <div class="prize-icon">🎬</div>
+                <div class="prize-title">播放量奖励</div>
+                <div class="prize-amount">1,000</div>
+                <div class="prize-desc">积分 / 每 10,000 次播放<br>发布至 X、YouTube、TikTok 或 Instagram</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Brand Story Section -->
+    <section class="brand-section">
+        <div class="brand-content">
+            <div class="section-header fade-in">
+                <div class="section-label">Heritage</div>
+                <h2 class="section-title">品牌故事</h2>
+            </div>
+            
+            <div class="brand-year fade-in">1925</div>
+            <p class="brand-text fade-in">
+                Kestos 于 1925 年创立于伦敦，曾凭借创新的两片式内衣重新定义了女性的自由。如今，品牌采用高性能的<strong>「水陆两栖」面料</strong>，支持用户从高强度陆地运动直接切换至水下场景，无需更换装束。
+            </p>
+            
+            <div class="brand-quote fade-in">
+                "释放自我，始于 Kestos；<br>超越游泳，超越汗水。"
+            </div>
+            
+            <div class="keywords fade-in">
+                <span class="keyword">灵动 Kinetic</span>
+                <span class="keyword">极简 Minimalist</span>
+                <span class="keyword">多功能 Versatile</span>
+                <span class="keyword">海岸感 Coastal</span>
+                <span class="keyword">永恒 Timeless</span>
+            </div>
+        </div>
+    </section>
+
+    <!-- Color Palette Section -->
+    <section class="palette-section">
+        <div class="section-header fade-in">
+            <div class="section-label">Visual Identity</div>
+            <h2 class="section-title">品牌色彩</h2>
+        </div>
+        
+        <div class="palette-grid fade-in">
+            <div class="color-item teal">
+                <div class="color-name">浪潮青</div>
+                <div class="color-hex">#1E7FA0</div>
+            </div>
+            <div class="color-item white">
+                <div class="color-name">盐白</div>
+                <div class="color-hex">#FFFEFA</div>
+            </div>
+            <div class="color-item wine">
+                <div class="color-name">暮色红</div>
+                <div class="color-hex">#843040</div>
+            </div>
+            <div class="color-item black">
+                <div class="color-name">深渊黑</div>
+                <div class="color-hex">#000000</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Requirements Section -->
+    <section class="req-section">
+        <div class="section-header fade-in">
+            <div class="section-label">Guidelines</div>
+            <h2 class="section-title">作品要求</h2>
+        </div>
+        
+        <div class="req-list">
+            <div class="req-item fade-in">
+                <div class="req-number">1</div>
+                <div class="req-text">视频长度约为 30 秒，且必须包含明确的情节推进或商业叙事逻辑</div>
+            </div>
+            <div class="req-item fade-in">
+                <div class="req-number">2</div>
+                <div class="req-text">视频中出现的任何产品外观或 Logo 展示，必须使用官方素材包中提供的资源。严禁使用非官方或第三方品牌材料</div>
+            </div>
+            <div class="req-item fade-in">
+                <div class="req-number">3</div>
+                <div class="req-text">若作品不符合 Kestos 品牌广告属性或与品牌推广无关，将不被视为有效参赛作品</div>
+            </div>
+            <div class="req-item fade-in">
+                <div class="req-number">4</div>
+                <div class="req-text">在 IMA Studio 平台发布作品时，请勾选活动标签 <strong>#KestosChallenge</strong></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta-section">
+        <div class="cta-content">
+            <h2 class="cta-title">准备好创作了吗？</h2>
+            <p class="cta-desc">
+                使用 IMA Studio 创作你的 Kestos 品牌广告<br>
+                让你的作品闪耀纽约/旧金山街头
+            </p>
+            <a href="https://imastudio.com" target="_blank" class="cta-button cta-button-light">
+                立即参与
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <p class="footer-text">© 2026 Kestos × IMA Studio. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Loading Screen
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                document.getElementById('loading').classList.add('hidden');
+            }, 1500);
+        });
+
+        // Countdown Timer
+        const deadline = new Date('2026-03-08T23:59:59').getTime();
+        
+        function updateCountdown() {
+            const now = new Date().getTime();
+            const distance = deadline - now;
+            
+            if (distance > 0) {
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                document.getElementById('days').textContent = String(days).padStart(2, '0');
+                document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+                document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+                document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+            }
+        }
+        
+        updateCountdown();
+        setInterval(updateCountdown, 1000);
+
+        // Scroll Animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.fade-in').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
+</body>
+</html>
