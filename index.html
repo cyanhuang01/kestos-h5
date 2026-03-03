@@ -279,27 +279,37 @@
 
         .prize-cards {
             display: grid;
+            grid-template-columns: repeat(2, 1fr);
             gap: 20px;
-            max-width: 600px;
+            max-width: 800px;
             margin: 0 auto;
         }
 
         .prize-card {
-            background: var(--sand);
+            background: #222222;
             border-radius: 20px;
             padding: 32px;
             position: relative;
             overflow: hidden;
+            color: #ffffff;
         }
 
         .prize-card.featured {
-            background: linear-gradient(135deg, var(--surge-teal) 0%, #164d63 100%);
-            color: var(--salt-white);
+            background: #222222;
+            color: #ffffff;
+        }
+
+        .prize-card .prize-title {
+            color: #ffffff;
+        }
+
+        .prize-card .prize-desc {
+            color: rgba(255, 255, 255, 0.7);
         }
 
         .prize-card.featured .prize-title,
         .prize-card.featured .prize-desc {
-            color: var(--salt-white);
+            color: #ffffff;
         }
 
         .prize-icon {
@@ -320,7 +330,7 @@
             letter-spacing: 1px;
             text-transform: uppercase;
             margin-bottom: 8px;
-            color: var(--abyss-black);
+            color: #ffffff;
         }
 
         .prize-amount {
@@ -332,7 +342,7 @@
 
         .prize-desc {
             font-size: 14px;
-            color: rgba(0, 0, 0, 0.6);
+            color: rgba(255, 255, 255, 0.7);
             line-height: 1.6;
         }
 
@@ -596,6 +606,10 @@
             
             .brand-year {
                 font-size: 56px;
+            }
+
+            .prize-cards {
+                grid-template-columns: 1fr;
             }
         }
     </style>
