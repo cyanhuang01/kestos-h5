@@ -31,6 +31,9 @@
             color: var(--abyss-black);
             line-height: 1.6;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-rendering: optimizeLegibility;
         }
 
         /* Loading Screen */
@@ -142,7 +145,10 @@
             color: var(--salt-white);
             line-height: 1.1;
             margin-bottom: 24px;
-            letter-spacing: -1px;
+            letter-spacing: -0.5px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
         }
 
         .hero h1 .highlight {
